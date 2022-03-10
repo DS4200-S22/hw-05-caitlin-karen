@@ -21,10 +21,18 @@ const svg2 = d3.select("#vis-holder")
                 .attr("height", height - margin.top - margin.bottom);
 
 //TODO: Initialize brush for Scatterplot2 and points. We will need these to be global.
+let brush2;
+let myCircles2;
 
 //TODO: append svg object to the body of the page to house bar chart 
+const svg3 = d3.select("#vis-holder")
+                .append("svg")
+                .attr("width", width - margin.left - margin.right)
+                .attr("height", height - margin.top - margin.bottom)
+                .attr("viewBox", [0, 0, width, height]); 
 
 //TODO: Initialize bars. We will need these to be global. 
+let brush3;
 
 
 // Define color scale
@@ -101,14 +109,85 @@ d3.csv("data/iris.csv").then((data) => {
                               .style("opacity", 0.5);
 
     //TODO: Define a brush (call it brush1)
+    brush1 = d3.brush()
+                .extent([margin.left, margin.bottom],
+                  [width - margin.right, height - margin.top])
+                  .on('brush', updateChart1)
+                  .on('start', clear);
 
     //TODO: Add brush1 to svg1
+    svg1.call(brush1)
     
   }
 
   //TODO: Scatterplot 2 (show Sepal width on x-axis and Petal width on y-axis)
   {
     // Scatterplot2 code here 
+    xKey2 = "Sepal_Width";
+    yKey2 = "Petal_Width";
+
+    let maxX2 = d3.max(data, (d) => {return d[xKey2];});
+
+    // X scale
+    x2 = d3.scaleLinear()
+            .domain([0, maxX2])
+            .range([margin.left, width - margin.right]);
+      
+    // X axis
+    svg2.append("g")
+        .attr("transform", "translate(0, ${height - margin.bottom})")
+        .call(d3.axisBottom(x2))
+        .attr("font-size", "20px")
+        .call((g) => g.append("text")
+                      .attr("x", width - margin.right)
+                      .attr("y", margin.bottom - 5)
+                      .attr("fill", "black")
+                      .attr("text-anchor", "end")
+                      .text(xKey2)
+        );
+
+    // Max Y
+    let maxY2 = d3.max(data, (d) => {return d[yKey2];});
+
+    // Y scale
+    y2 = d3.scaleLinear()
+            .domain([0, maxY2])
+            .range([height - margin.bottom, margin.top]);
+
+    // Y axis
+    svg2.append("g")
+        .attr("transform", "translate(${margin.left}, 0)")
+        .call(d3.axisLeft(y2))
+        .attr("font-size", "20px")
+        .call((g) => g.append("text")
+                      .attr("x", 0)
+                      .attr("y", margin.top)
+                      .attr("fill", "black")
+                      .attr("text-anchor", "end")
+                      .text(yKey2)
+    );
+
+    // points
+    const myCircles2 = svg2.selectAll("circle")
+                            .data(data)
+                            .enter()
+                              .append("circle")
+                              .attr("id", (d) => d.id)
+                              .attr("cx", (d) => x2(d[xKey2]))
+                              .attr("cy", (d) => y2(d[yKey2]))
+                              .attr("r", 8)
+                              .style("fill", (d) => color(d.Species))
+                              .style("opacity", 0.5);
+
+    //TODO: Define brush2
+        brush2 = d3.brush()
+                  .extent([[margin.left, margin.bottom],
+                    [width - margin.right, height - margin.top]])
+                    .on('brush', updateChart2)
+                    .on("start", clear);
+
+      //TODO: Add brush2 to svg2
+      svg2.call(brush2)
   }
 
   //TODO: Barchart with counts of different species
