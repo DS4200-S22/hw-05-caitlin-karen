@@ -98,7 +98,7 @@ d3.csv("data/iris.csv").then((data) => {
       );
 
     // Add points
-    const myCircles1 = svg1.selectAll("circle")
+    myCircles1 = svg1.selectAll("circle")
                             .data(data)
                             .enter()
                               .append("circle")
@@ -136,7 +136,7 @@ d3.csv("data/iris.csv").then((data) => {
       
     // X axis
     svg2.append("g")
-        .attr("transform", "translate(0, ${height - margin.bottom})")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(x2))
         .attr("font-size", "20px")
         .call((g) => g.append("text")
@@ -157,7 +157,7 @@ d3.csv("data/iris.csv").then((data) => {
 
     // Y axis
     svg2.append("g")
-        .attr("transform", "translate(${margin.left}, 0)")
+        .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(y2))
         .attr("font-size", "20px")
         .call((g) => g.append("text")
@@ -169,7 +169,7 @@ d3.csv("data/iris.csv").then((data) => {
     );
 
     // points
-    const myCircles2 = svg2.selectAll("circle")
+    myCircles2 = svg2.selectAll("circle")
                             .data(data)
                             .enter()
                               .append("circle")
@@ -181,9 +181,9 @@ d3.csv("data/iris.csv").then((data) => {
                               .style("opacity", 0.5);
 
     //TODO: Define brush2
-        brush2 = d3.brush()
+      brush2 = d3.brush()
                   .extent([[margin.left, margin.bottom],
-                    [width - margin.right, height - margin.top]])
+                          [width - margin.right, height - margin.top]])
                     .on('brush', updateChart2)
                     .on("start", clear);
 
@@ -194,7 +194,7 @@ d3.csv("data/iris.csv").then((data) => {
   //TODO: Barchart with counts of different species
   {
     // Bar chart code here 
-    const d1 = [ {Species: "sestosa", Count: 50},
+    const d1 = [ {Species: "setosa", Count: 50},
                 {Species: "versicolor", Count: 50},
                 {Species: "virginica", Count: 50},];
 
