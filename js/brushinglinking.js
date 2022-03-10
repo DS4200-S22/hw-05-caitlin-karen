@@ -193,6 +193,64 @@ d3.csv("data/iris.csv").then((data) => {
   //TODO: Barchart with counts of different species
   {
     // Bar chart code here 
+    const d1 = [ {Species: "sestosa", Count: 50},
+                {Species: "versicolor", Count: 50},
+                {Species: "virginica", Count: 50},];
+
+    xKey3 = "Species";
+    yKey3 - "Count";
+
+    // max Y
+    let maxY3 = d3.max(d1, (d) => {return d[yKey3];});
+
+    // X scale
+    y3 = d3.scaleBand()
+        .domain(d3.range(d1.length))
+        .range([margin.left, width - margin.right])
+        .padding(0.1);
+
+    // Y scale
+    y3 = d3.scaleLinear()
+            .domain([0, maxY3])
+            .range[(height - margin.bottom, margin.top)];
+
+    // x axis
+    svg3.append("g")
+        .attr("transform", "translate(0, ${height - margin.bottom})")
+        .call(d3.axisBottom(x3).tickFormat(i => d1[i][xKey3]))
+        .attr("font-size", "20px")
+        .call((g) => g.append("text")
+                      .attr("x", width - margin.right)
+                      .attr("y", margin.bottom - 5)
+                      .attr("fill", "black")
+                      .attr("text-anchor", "end")
+                      .text(xKey3));
+
+    // y axis
+    svg3.append("g")
+        .attr("transform", "translate(${margin.left}, 0)")
+        .call(d3.axisLeft(y3))
+        .attr("font-size", "20px")
+        .call((g) => g.append("text")
+                      .attr("x", 0)
+                      .attr("y", margin.top - 10)
+                      .attr("fill", "black")
+                      .attr("text-anchor", "end")
+                      .text(yKey3));
+
+    // bars
+    bars = svg3.selectAll(".bar")
+                .data(d1)
+                .enter()
+                .append('rect')
+                .attr("class", "bar")
+                .attr("x", (d, i) => x3(i))
+                .attr("y", (d) => y3(d[yKey3]))
+                .attr("height", (d) => (height - margin.bottom) - y3(d[yKey3]))
+                .attr("width", x3.bandwidth())
+                .style("opacity", 0.5)
+                .style("fill", (d) => color(d.Species));
+
   }
 
   //Brushing Code---------------------------------------------------------------------------------------------
