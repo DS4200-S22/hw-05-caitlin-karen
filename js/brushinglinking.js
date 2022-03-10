@@ -260,31 +260,47 @@ d3.csv("data/iris.csv").then((data) => {
       svg1.call(brush1.move, null);
       
       //TODO: add code to clear existing brush from svg2
+      svg2.call(brush2.move, null);
   }
 
   // Call when Scatterplot1 is brushed 
   function updateChart1(brushEvent) {
       
-      //TODO: Find coordinates of brushed region 
+      //TODO: Find coordinates of brushed region
+      let coor = brushEvent.selection;
   
       //TODO: Give bold outline to all points within the brush region in Scatterplot1
+      myCircles1.classed("select", function(d){return isBrushed(coor, x1(d[xKey1]), y1(d[yKey1]))})
 
       //TODO: Give bold outline to all points in Scatterplot2 corresponding to points within the brush region in Scatterplot1
-    
+      myCircles2.classed("select", function(d){return isBrushed(coor, x1(d[xKey1]), y1(d[yKey1]))})
   }
 
   // Call when Scatterplot2 is brushed 
   function updateChart2(brushEvent) {
     
     //TODO: Find coordinates of brushed region 
+    let coor = brushEvent.selection;
 
     //TODO: Start an empty set that you can store names of selected species in 
+    let species = new Set();
   
     //TODO: Give bold outline to all points within the brush region in Scatterplot2 & collected names of brushed species
+    myCircles2.classed("selected", function(d){ 
+      let toSelect = isBrushed(extent, x2(d[xKey2]), y2(d[yKey2]));
+    
+    if (toSelect) {
+      species.add(d.Species)
+    }
+    
+    return toSelect;
+    })
 
     //TODO: Give bold outline to all points in Scatterplot1 corresponding to points within the brush region in Scatterplot2
+    myCircles1.classed("selected", function(d){ return isBrushed(extent, x2(d[xKey2]), y2(d[yKey2]))});
 
     //TODO: Give bold outline to all bars in bar chart with corresponding to species selected by Scatterplot2 brush
+    bars.classed("selected", function(d) {return species.has(d[xKey3])});
 
   }
 
