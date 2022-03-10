@@ -217,7 +217,7 @@ d3.csv("data/iris.csv").then((data) => {
 
     // x axis
     svg3.append("g")
-        .attr("transform", "translate(0, ${height - margin.bottom})")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(x3).tickFormat(i => d1[i][xKey3]))
         .attr("font-size", "20px")
         .call((g) => g.append("text")
@@ -229,7 +229,7 @@ d3.csv("data/iris.csv").then((data) => {
 
     // y axis
     svg3.append("g")
-        .attr("transform", "translate(${margin.left}, 0)")
+        .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(y3))
         .attr("font-size", "20px")
         .call((g) => g.append("text")
@@ -288,7 +288,7 @@ d3.csv("data/iris.csv").then((data) => {
   
     //TODO: Give bold outline to all points within the brush region in Scatterplot2 & collected names of brushed species
     myCircles2.classed("select", function(d){ 
-      let toSelect = isBrushed(extent, x2(d[xKey2]), y2(d[yKey2]));
+      let toSelect = isBrushed(coor, x2(d[xKey2]), y2(d[yKey2]));
     
     if (toSelect) {
       species.add(d.Species)
@@ -298,7 +298,7 @@ d3.csv("data/iris.csv").then((data) => {
     })
 
     //TODO: Give bold outline to all points in Scatterplot1 corresponding to points within the brush region in Scatterplot2
-    myCircles1.classed("select", function(d){ return isBrushed(extent, x2(d[xKey2]), y2(d[yKey2]))});
+    myCircles1.classed("select", function(d){ return isBrushed(coor, x2(d[xKey2]), y2(d[yKey2]))});
 
     //TODO: Give bold outline to all bars in bar chart with corresponding to species selected by Scatterplot2 brush
     bars.classed("select", function(d) {return species.has(d[xKey3])});
